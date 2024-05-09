@@ -1,12 +1,15 @@
-# EXPERIMENT 06: SQUARE WAVE GENERATION AT THE OUTPUT PIN USING TIMER
-
-### Aim:
+# EXPERIMENT 06 SQUARE WAVE GENERATION AT THE OUTPUT PIN USING TIMER
+```
+Name: Yuvadarshini S
+Reg No.: 212221230126
+```
+## Aim:
 To generate a PWM wave at the timer pin output and  simuate it on  proteus using an virtual oscilloscope  
 
-### Components required:
+## Components required:
 STM32 CUBE IDE, Proteus 8 simulator .
 
-### Theory:
+## Theory:
 
 The timer modules can operate a variety of modes one of which is the PWM mode. Where the timer gets clocked from an internal source and counts up to the auto-reload register value, then the output channel pin is driven HIGH. And it remains until the timer counts reach the CCRx register value, the match event causes the output channel pin to be driven LOW. And it remains until the timer counts up to the auto-reload register value, and so on.
 
@@ -45,16 +48,10 @@ In normal settings, assuming you’re using the timer module in PWM mode and gen
 
 
 ## Procedure:
-Step1: Open CubeMX & Create New Project
- ![image](https://user-images.githubusercontent.com/36288975/226189166-ac10578c-c059-40e7-8b80-9f84f64bf088.png)
+Step1: Open CubeMX & Create New Project.
+ 
+Step2: Choose The Target MCU & Double-Click Its Name select the target to be programmed and click on next.
 
-
-Step2: Choose The Target MCU & Double-Click Its Name select the target to be programmed  as shown below and click on next 
-
- ![image](https://user-images.githubusercontent.com/36288975/226189215-2d13ebfb-507f-44fc-b772-02232e97c0e3.png)
-![image](https://user-images.githubusercontent.com/36288975/226189230-bf2d90dd-9695-4aaf-b2a6-6d66454e81fc.png)
-
-![image](https://user-images.githubusercontent.com/36288975/226189280-ed5dcf1d-dd8d-43ae-815d-491085f4863b.png)
 
 Step3: Configure Timer2 Peripheral To Operate In PWM Mode With CH1 Output
 ![image](https://github.com/vasanthkumarch/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/36288975/682c851a-7dfe-4089-8395-f76088d43896)
@@ -107,13 +104,15 @@ static void MX_TIM2_Init(void);
 int main(void)
 {
   HAL_Init();
+
   SystemClock_Config();
+
   MX_GPIO_Init();
   MX_TIM2_Init();
 
-   HAL_TIM_Base_Start(&htim2);
-   HAL_TIM_PWM_Init(&htim2);
-   HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
+  HAL_TIM_Base_Start(&htim2);
+  HAL_TIM_PWM_Init(&htim2);
+  HAL_TIM_PWM_Start(&htim2,TIM_CHANNEL_1);
 
   while (1)
   {
@@ -121,12 +120,10 @@ int main(void)
 
 }
 
-
 void SystemClock_Config(void)
 {
   RCC_OscInitTypeDef RCC_OscInitStruct = {0};
   RCC_ClkInitTypeDef RCC_ClkInitStruct = {0};
-
 
   __HAL_RCC_PWR_CLK_ENABLE();
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE2);
@@ -153,19 +150,17 @@ void SystemClock_Config(void)
   }
 }
 
-
 static void MX_TIM2_Init(void)
 {
-
 
   TIM_ClockConfigTypeDef sClockSourceConfig = {0};
   TIM_MasterConfigTypeDef sMasterConfig = {0};
   TIM_OC_InitTypeDef sConfigOC = {0};
 
   htim2.Instance = TIM2;
-  htim2.Init.Prescaler = 3;
+  htim2.Init.Prescaler = 1;
   htim2.Init.CounterMode = TIM_COUNTERMODE_UP;
-  htim2.Init.Period = 1000;
+  htim2.Init.Period = 10000;
   htim2.Init.ClockDivision = TIM_CLOCKDIVISION_DIV1;
   htim2.Init.AutoReloadPreload = TIM_AUTORELOAD_PRELOAD_ENABLE;
   if (HAL_TIM_Base_Init(&htim2) != HAL_OK)
@@ -188,26 +183,23 @@ static void MX_TIM2_Init(void)
     Error_Handler();
   }
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
-  sConfigOC.Pulse = 500;
+  sConfigOC.Pulse = 7000;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   if (HAL_TIM_PWM_ConfigChannel(&htim2, &sConfigOC, TIM_CHANNEL_1) != HAL_OK)
   {
     Error_Handler();
   }
+
   HAL_TIM_MspPostInit(&htim2);
 
 }
 
-
 static void MX_GPIO_Init(void)
 {
-
   __HAL_RCC_GPIOA_CLK_ENABLE();
 
 }
-
-
 
 void Error_Handler(void)
 {
@@ -225,41 +217,58 @@ void assert_failed(uint8_t *file, uint32_t line)
 
 }
 #endif
-
 ```
-## Output screen shots of proteus  :
- 
- 
- ## CIRCUIT DIAGRAM: 
  
 
 ## DUTY CYCLE AND FREQUENCY CALCULATION 
-FOR PULSE AT 500
+### FOR DUTY RATIO 50%
+![50%](https://github.com/amal-2006/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/148410730/5bccadbe-a182-4d07-a7e3-63e54c0bfd47)
 
-TON = 
-TOFF=
-TOTAL TIME = 
-FREQUENCY = 1/(TOTAL TIME)
+TON = 0.6ms
 
-FOR PULSE AT 700
+TOFF= 0.6ms
 
-TON = 
-TOFF=
-TOTAL TIME = 
-FREQUENCY = 1/(TOTAL TIME)
+TOTAL TIME = 1.2ms
+
+FREQUENCY = 1/(1.2ms) = 833.33Hz
+
+### FOR DUTY RATIO 70%
+![70%](https://github.com/amal-2006/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/148410730/ac49d393-e7a6-48aa-904f-dc3a7555bcd6)
+
+TON = 0.84ms
+
+TOFF= 0.36
+
+TOTAL TIME = 1.2ms
+
+FREQUENCY = 1/(1.2ms) = 833.33Hz
 
 
-FOR PULSE AT 900
-
-TON = 
-TOFF=
-TOTAL TIME = 
-FREQUENCY = 1/(TOTAL TIME)
+### FOR DUTY RATIO 90%
+![90%](https://github.com/amal-2006/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/148410730/4ca495c4-a7e4-4754-a48d-7afb0522e7aa)
 
 
+
+TON = 1.08ms
+
+TOFF= 0.12ms
+
+TOTAL TIME = 1.2ms
+
+FREQUENCY = 1/(1.2ms) = 833.33Hz
+
+## OUTPUT SCREENSHOTS OF PROTEUS:
+<img width="614" alt="image" src="https://github.com/Yuvadarshini-Sathiyamoorthy/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/93482485/3255c579-193a-4557-82e0-7ec285e074ff">
+
+
+
+## CIRCUIT DIAGRAM (EXPORT THE GRAPHICS TO PDF AND ADD THE SCREEN SHOT HERE):
+![image](https://github.com/Yuvadarshini-Sathiyamoorthy/EXPERIMENT--07-SQUARE-WAVE-GENERATION-AT-THE-OUTPUT-PIN-USING-TIMER/assets/93482485/8cc07202-ae58-4825-9bf0-2f3d269af9ea)
+
+
+ 
 ## Result :
-A PWM Signal is generated using the following frequency and various duty cycles are simulated 
-
+A PWM Signal is generated using the following frequency and various duty cycles are simulated.
 
 
 
